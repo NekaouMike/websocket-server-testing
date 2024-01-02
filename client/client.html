@@ -61,6 +61,7 @@
 				}
 				
 				payloadCopy['__MESSAGE__'] = message;
+				console.log(payloadCopy);
 				this.socket.send(JSON.stringify(payloadCopy));
 			}
 			

@@ -22,7 +22,9 @@ int main(int argc, char* argv[])
 			std::clog << "There are now " << server.numConnections() << " open connections." << std::endl;
 			
 			//Send a hello message to the client
-			server.sendMessage(conn, "hello", Json::Value());
+			Json::Value hellomsg;
+			hellomsg["msg"] = "Hello World";
+			server.sendMessage(conn, "message", hellomsg);
 		});
 	});
 	server.disconnect([&mainEventLoop, &server](ClientConnection conn)

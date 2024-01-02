@@ -5,7 +5,7 @@
 #include <iostream>
 
 //The name of the special JSON field that holds the message type for messages
-#define MESSAGE_FIELD "__MESSAGE__"
+//#define MESSAGE_FIELD "__MESSAGE__"
 
 Json::Value WebsocketServer::parseJson(const string& json)
 {
@@ -58,7 +58,7 @@ void WebsocketServer::sendMessage(ClientConnection conn, const string& messageTy
 {
 	//Copy the argument values, and bundle the message type into the object
 	Json::Value messageData = arguments;
-	messageData[MESSAGE_FIELD] = messageType;
+	// messageData[MESSAGE_FIELD] = messageType;
 	
 	//Send the JSON data to the client (will happen on the networking thread's event loop)
 	this->endpoint.send(conn, WebsocketServer::stringifyJson(messageData), websocketpp::frame::opcode::text);
@@ -131,17 +131,17 @@ void WebsocketServer::onMessage(ClientConnection conn, WebsocketEndpoint::messag
 	if (messageObject.isNull() == false)
 	{
 		//Validate that the JSON object contains the message type field
-		if (messageObject.isMember(MESSAGE_FIELD))
-		{
-			//Extract the message type and remove it from the payload
-			std::string messageType = messageObject[MESSAGE_FIELD].asString();
-			messageObject.removeMember(MESSAGE_FIELD);
+		//if (messageObject.isMember(MESSAGE_FIELD))
+		//{
+		//	//Extract the message type and remove it from the payload
+			//std::string messageType = messageObject[MESSAGE_FIELD].asString();
+		//	messageObject.removeMember(MESSAGE_FIELD);
 			
 			//If any handlers are registered for the message type, invoke them
-			auto& handlers = this->messageHandlers[messageType];
+		auto& handlers = this->messageHandlers["message"];
 			for (auto handler : handlers) {
 				handler(conn, messageObject);
-			}
+			//}
 		}
 	}
 }
